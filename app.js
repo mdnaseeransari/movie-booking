@@ -1,5 +1,5 @@
 /**
- * CineLux - Client-side Booking & Confirmation Logic
+ * CineBook - Client-side Booking & Confirmation Logic
  * Handles movie ticket booking form computations, localStorage persistence, and receipt rendering.
  */
 
@@ -108,23 +108,19 @@ function initializeBookingPage() {
     const unitPrice = seatPrices[tier];
     const totalAmount = seats * unitPrice;
 
-    // Create unique random booking reference number
-    const bookingRef = 'CL-' + Math.floor(10000 + Math.random() * 90000);
+    // Create unique random 6-digit booking reference number
+    const bookingId = Math.floor(100000 + Math.random() * 900000);
 
-    // Save booking payload to localStorage
-    const bookingPayload = {
-      ref: bookingRef,
-      name: customerName.value,
-      email: customerEmail.value,
-      movie: movieSelect.value,
-      showtime: showtimeSelect.value,
-      date: bookingDate.value,
-      seatsCount: seats,
-      seatType: tier,
-      totalPrice: totalAmount.toFixed(2)
-    };
-
-    localStorage.setItem('cineLuxBooking', JSON.stringify(bookingPayload));
+    // Save booking payload to individual localStorage keys
+    localStorage.setItem('customerName', customerName.value);
+    localStorage.setItem('email', customerEmail.value);
+    localStorage.setItem('movie', movieSelect.value);
+    localStorage.setItem('showtime', showtimeSelect.value);
+    localStorage.setItem('date', bookingDate.value);
+    localStorage.setItem('seats', seats.toString());
+    localStorage.setItem('seatType', tier);
+    localStorage.setItem('totalPrice', totalAmount.toFixed(2));
+    localStorage.setItem('bookingId', bookingId.toString());
 
     // Redirect to confirmation screen
     window.location.href = 'confirm.html';
@@ -138,38 +134,39 @@ function initializeConfirmationPage() {
   const noBookingState = document.getElementById('no-booking-state');
   const bookingConfirmedState = document.getElementById('booking-confirmed-state');
 
-  // Get data from storage
-  const payload = localStorage.getItem('cineLuxBooking');
-  if (!payload) {
+  // Retrieve individual keys from storage
+  const customerName = localStorage.getItem('customerName');
+  const email = localStorage.getItem('email');
+  const movie = localStorage.getItem('movie');
+  const showtime = localStorage.getItem('showtime');
+  const date = localStorage.getItem('date');
+  const seats = localStorage.getItem('seats');
+  const seatType = localStorage.getItem('seatType');
+  const totalPrice = localStorage.getItem('totalPrice');
+  const bookingId = localStorage.getItem('bookingId');
+
+  // Verify that essential keys are present
+  if (!customerName || !email || !movie || !showtime || !date || !seats || !seatType || !totalPrice || !bookingId) {
     // Show error state if navigated to manually without booking
     noBookingState.style.display = 'block';
     bookingConfirmedState.style.display = 'none';
     return;
   }
 
-  // Parse booking JSON
-  try {
-    const data = JSON.parse(payload);
+  // Inject details into confirmation view elements
+  document.getElementById('ticket-ref').textContent = `#${bookingId}`;
+  document.getElementById('ticket-movie').textContent = movie;
+  document.getElementById('ticket-date').textContent = formatDateString(date);
+  document.getElementById('ticket-showtime').textContent = showtime;
+  document.getElementById('ticket-name').textContent = customerName;
+  document.getElementById('ticket-email').textContent = email;
+  document.getElementById('ticket-seats-count').textContent = seats;
+  document.getElementById('ticket-seats-tier').textContent = seatType;
+  document.getElementById('ticket-price').textContent = `$${totalPrice}`;
 
-    // Inject data into ticket receipt
-    document.getElementById('ticket-ref').textContent = `#${data.ref}`;
-    document.getElementById('ticket-movie').textContent = data.movie;
-    document.getElementById('ticket-date').textContent = formatDateString(data.date);
-    document.getElementById('ticket-showtime').textContent = data.showtime;
-    document.getElementById('ticket-name').textContent = data.name;
-    document.getElementById('ticket-email').textContent = data.email;
-    document.getElementById('ticket-seats-count').textContent = data.seatsCount;
-    document.getElementById('ticket-seats-tier').textContent = data.seatType;
-    document.getElementById('ticket-price').textContent = `$${data.totalPrice}`;
-
-    // Show confirmed UI
-    noBookingState.style.display = 'none';
-    bookingConfirmedState.style.display = 'block';
-  } catch (err) {
-    console.error('Error parsing booking data:', err);
-    noBookingState.style.display = 'block';
-    bookingConfirmedState.style.display = 'none';
-  }
+  // Show confirmed UI
+  noBookingState.style.display = 'none';
+  bookingConfirmedState.style.display = 'block';
 }
 
 /**

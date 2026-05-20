@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineLux - Booking Confirmed</title>
-  <meta name="description" content="Your ticket booking at CineLux is confirmed.">
+  <title>CineBook - Booking Confirmed</title>
+  <meta name="description" content="Your ticket booking at CineBook is confirmed.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header>
     <a href="index.html" class="logo" id="header-logo">
-      CINE<span>LUX</span>
+      CINE<span>BOOK</span>
     </a>
     <nav>
       <a href="index.html" id="nav-home">Home</a>
@@ -33,7 +33,8 @@
     <!-- Booking Confirmed State -->
     <div id="booking-confirmed-state" style="display: none; animation: slideUp 0.6s ease-out;">
       <div class="hero" style="margin-bottom: 2rem;">
-        <div class="success-icon" style="width: 60px; height: 60px; font-size: 2rem; margin-bottom: 1rem;">✓</div>
+        <!-- Green Checkmark Circle -->
+        <div class="success-icon" style="width: 72px; height: 72px; font-size: 2.5rem; margin: 0 auto 1.5rem auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #ffffff; background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 0 25px rgba(16, 185, 129, 0.45);">✓</div>
         <h1 style="font-size: 2.25rem;">Booking Confirmed!</h1>
         <p>Your ticket is secured. Show this virtual receipt at the theater entrance.</p>
       </div>
@@ -41,17 +42,17 @@
       <!-- Ticket Receipt Card -->
       <div class="booking-card" style="position: relative; overflow: hidden; padding: 0;">
         
-        <!-- Ticket Header (Sleek Gradient Accent) -->
-        <div style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); height: 8px;"></div>
+        <!-- Ticket Header (Green Gradient Accent) -->
+        <div style="background: linear-gradient(135deg, #10b981, var(--secondary-color)); height: 8px;"></div>
         
         <div style="padding: 2rem;">
           <!-- Reference header -->
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--panel-border); padding-bottom: 1.25rem; margin-bottom: 1.5rem;">
             <div>
-              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Booking Ref</span>
-              <h3 id="ticket-ref" style="font-size: 1.35rem; font-weight: 800; color: var(--secondary-color);">#CL-xxxxx</h3>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Booking ID</span>
+              <h3 id="ticket-ref" style="font-size: 1.35rem; font-weight: 800; color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);">#CL-xxxxxx</h3>
             </div>
-            <span style="font-size: 0.75rem; border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 0.25rem 0.75rem; border-radius: 50px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; background: rgba(6, 182, 212, 0.05);">Confirmed</span>
+            <span style="font-size: 0.75rem; border: 1px solid #10b981; color: #10b981; padding: 0.25rem 0.75rem; border-radius: 50px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; background: rgba(16, 185, 129, 0.05);">Confirmed</span>
           </div>
 
           <!-- Movie details -->
@@ -75,7 +76,7 @@
           <!-- Customer details & ticket details -->
           <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; border-bottom: 1px solid var(--panel-border); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
             <div>
-              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Guest Name</span>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Customer Details</span>
               <p id="ticket-name" style="font-weight: 600; margin-top: 0.25rem; font-size: 1rem; color: #fff;">-</p>
               <p id="ticket-email" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.1rem; word-break: break-all;">-</p>
             </div>
@@ -89,8 +90,8 @@
 
           <!-- Ticket Price footer -->
           <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.5rem;">
-            <span style="font-weight: 700; font-size: 1.1rem; color: #fff;">Amount Paid</span>
-            <span id="ticket-price" style="font-size: 2rem; font-weight: 800; color: var(--secondary-color); text-shadow: 0 0 15px var(--secondary-glow);">$0.00</span>
+            <span style="font-weight: 700; font-size: 1.1rem; color: #fff;">Total Price</span>
+            <span id="ticket-price" style="font-size: 2rem; font-weight: 800; color: #10b981; text-shadow: 0 0 15px rgba(16, 185, 129, 0.3);">$0.00</span>
           </div>
 
         </div>
@@ -112,7 +113,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2026 CineLux Theaters. All rights reserved.</p>
+    <p>&copy; 2026 CineBook Theaters. All rights reserved.</p>
   </footer>
 
   <script src="app.js"></script>
