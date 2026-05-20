@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineLux - Book Tickets</title>
+  <meta name="description" content="Select seats and reserve tickets for your favorite movies at CineLux.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo" id="header-logo">
+      CINE<span>LUX</span>
+    </a>
+    <nav>
+      <a href="index.html" id="nav-home">Home</a>
+      <a href="#" id="nav-movies">Movies</a>
+      <a href="#" id="nav-theaters">Theaters</a>
+    </nav>
+  </header>
+
+  <main>
+    <a href="index.html" class="back-link" id="btn-back">
+      &larr; Back to Movies
+    </a>
+
+    <div class="booking-title-section">
+      <h1 class="booking-movie-name" id="movie-display-title">Select Movie</h1>
+    </div>
+
+    <div class="booking-container">
+      
+      <!-- Seat Selection & Details Column -->
+      <div class="booking-card">
+        <h3>Choose Your Seats</h3>
+        
+        <!-- Screen graphic -->
+        <div class="screen-container">
+          <div class="screen"></div>
+          <div class="screen-text">Screen</div>
+        </div>
+
+        <!-- Seats Grid -->
+        <div class="seat-grid" id="seating-grid">
+          <!-- Row A -->
+          <div class="seat-row">
+            <span class="seat-row-label">A</span>
+            <button class="seat" data-seat="A1" id="seat-A1"></button>
+            <button class="seat" data-seat="A2" id="seat-A2"></button>
+            <button class="seat occupied" data-seat="A3" id="seat-A3" disabled></button>
+            <button class="seat occupied" data-seat="A4" id="seat-A4" disabled></button>
+            <button class="seat" data-seat="A5" id="seat-A5"></button>
+            <button class="seat" data-seat="A6" id="seat-A6"></button>
+            <button class="seat" data-seat="A7" id="seat-A7"></button>
+            <button class="seat" data-seat="A8" id="seat-A8"></button>
+          </div>
+
+          <!-- Row B -->
+          <div class="seat-row">
+            <span class="seat-row-label">B</span>
+            <button class="seat" data-seat="B1" id="seat-B1"></button>
+            <button class="seat" data-seat="B2" id="seat-B2"></button>
+            <button class="seat" data-seat="B3" id="seat-B3"></button>
+            <button class="seat" data-seat="B4" id="seat-B4"></button>
+            <button class="seat" data-seat="B5" id="seat-B5"></button>
+            <button class="seat occupied" data-seat="B6" id="seat-B6" disabled></button>
+            <button class="seat" data-seat="B7" id="seat-B7"></button>
+            <button class="seat" data-seat="B8" id="seat-B8"></button>
+          </div>
+
+          <!-- Row C -->
+          <div class="seat-row">
+            <span class="seat-row-label">C</span>
+            <button class="seat" data-seat="C1" id="seat-C1"></button>
+            <button class="seat occupied" data-seat="C2" id="seat-C2" disabled></button>
+            <button class="seat occupied" data-seat="C3" id="seat-C3" disabled></button>
+            <button class="seat" data-seat="C4" id="seat-C4"></button>
+            <button class="seat" data-seat="C5" id="seat-C5"></button>
+            <button class="seat" data-seat="C6" id="seat-C6"></button>
+            <button class="seat" data-seat="C7" id="seat-C7"></button>
+            <button class="seat" data-seat="C8" id="seat-C8"></button>
+          </div>
+
+          <!-- Row D -->
+          <div class="seat-row">
+            <span class="seat-row-label">D</span>
+            <button class="seat" data-seat="D1" id="seat-D1"></button>
+            <button class="seat" data-seat="D2" id="seat-D2"></button>
+            <button class="seat" data-seat="D3" id="seat-D3"></button>
+            <button class="seat" data-seat="D4" id="seat-D4"></button>
+            <button class="seat occupied" data-seat="D5" id="seat-D5" disabled></button>
+            <button class="seat" data-seat="D6" id="seat-D6"></button>
+            <button class="seat" data-seat="D7" id="seat-D7"></button>
+            <button class="seat" data-seat="D8" id="seat-D8"></button>
+          </div>
+
+          <!-- Row E -->
+          <div class="seat-row">
+            <span class="seat-row-label">E</span>
+            <button class="seat" data-seat="E1" id="seat-E1"></button>
+            <button class="seat" data-seat="E2" id="seat-E2"></button>
+            <button class="seat" data-seat="E3" id="seat-E3"></button>
+            <button class="seat" data-seat="E4" id="seat-E4"></button>
+            <button class="seat" data-seat="E5" id="seat-E5"></button>
+            <button class="seat" data-seat="E6" id="seat-E6"></button>
+            <button class="seat" data-seat="E7" id="seat-E7"></button>
+            <button class="seat" data-seat="E8" id="seat-E8"></button>
+          </div>
+
+          <!-- Row F -->
+          <div class="seat-row">
+            <span class="seat-row-label">F</span>
+            <button class="seat" data-seat="F1" id="seat-F1"></button>
+            <button class="seat" data-seat="F2" id="seat-F2"></button>
+            <button class="seat" data-seat="F3" id="seat-F3"></button>
+            <button class="seat occupied" data-seat="F4" id="seat-F4" disabled></button>
+            <button class="seat occupied" data-seat="F5" id="seat-F5" disabled></button>
+            <button class="seat occupied" data-seat="F6" id="seat-F6" disabled></button>
+            <button class="seat" data-seat="F7" id="seat-F7"></button>
+            <button class="seat" data-seat="F8" id="seat-F8"></button>
+          </div>
+        </div>
+
+        <!-- Seating Legend -->
+        <div class="legend">
+          <div class="legend-item">
+            <div class="seat"></div>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <div class="seat selected"></div>
+            <span>Selected</span>
+          </div>
+          <div class="legend-item">
+            <div class="seat occupied"></div>
+            <span>Occupied</span>
+          </div>
+        </div>
+
+        <!-- Booking details form -->
+        <form id="booking-form" style="margin-top: 2.5rem;">
+          <div class="form-group">
+            <label for="showtime">Select Showtime</label>
+            <select id="showtime" class="form-control" required>
+              <option value="" disabled selected>Choose a showtime...</option>
+              <option value="12:30 PM">12:30 PM (Matinee - 10% Off)</option>
+              <option value="3:45 PM">3:45 PM (Afternoon)</option>
+              <option value="7:00 PM">7:00 PM (Prime Time)</option>
+              <option value="9:45 PM">9:45 PM (Late Night)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="customer-name">Full Name</label>
+            <input type="text" id="customer-name" class="form-control" placeholder="John Doe" required autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label for="customer-email">Email Address</label>
+            <input type="email" id="customer-email" class="form-control" placeholder="john.doe@example.com" required autocomplete="email">
+          </div>
+        </form>
+      </div>
+
+      <!-- Booking Summary Column -->
+      <div class="booking-card summary-card">
+        <div class="summary-heading">
+          <span>Reservation Summary</span>
+          <span style="font-size: 0.8rem; color: var(--secondary-color); font-weight: normal;">CineLux Premium</span>
+        </div>
+        
+        <ul class="summary-details">
+          <li class="summary-row">
+            <span class="summary-label">Movie Title</span>
+            <span class="summary-value" id="summary-movie-title">-</span>
+          </li>
+          <li class="summary-row">
+            <span class="summary-label">Showtime</span>
+            <span class="summary-value" id="summary-showtime">Not selected</span>
+          </li>
+          <li class="summary-row">
+            <span class="summary-label">Selected Seats</span>
+            <span class="summary-value seats-list" id="summary-seats">None</span>
+          </li>
+          <li class="summary-row">
+            <span class="summary-label">Ticket Price</span>
+            <span class="summary-value" id="summary-ticket-price">$15.00</span>
+          </li>
+        </ul>
+
+        <div class="total-price-row">
+          <span class="total-price-label">Total Amount</span>
+          <span class="total-price-value" id="summary-total-price">$0.00</span>
+        </div>
+
+        <button type="submit" form="booking-form" class="btn-book" style="margin-top: 1.5rem;" id="btn-submit-booking">
+          Confirm Reservation
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Success Dialog Overlay -->
+  <div class="modal-overlay" id="success-modal-overlay">
+    <div class="modal">
+      <div class="success-icon">✓</div>
+      <h2>Booking Confirmed!</h2>
+      <p>Thank you for choosing CineLux. Your seats have been reserved successfully. A ticket receipt has been sent to your email.</p>
+      
+      <!-- Virtual Ticket Stub -->
+      <div class="modal-ticket">
+        <div class="modal-ticket-row">
+          <span class="modal-ticket-label">Booking Ref:</span>
+          <span class="modal-ticket-val accent" id="ticket-ref">#CL-94821</span>
+        </div>
+        <div class="modal-ticket-row">
+          <span class="modal-ticket-label">Movie:</span>
+          <span class="modal-ticket-val" id="ticket-movie">-</span>
+        </div>
+        <div class="modal-ticket-row">
+          <span class="modal-ticket-label">Showtime:</span>
+          <span class="modal-ticket-val" id="ticket-showtime">-</span>
+        </div>
+        <div class="modal-ticket-row">
+          <span class="modal-ticket-label">Seats:</span>
+          <span class="modal-ticket-val accent" id="ticket-seats">-</span>
+        </div>
+        <div class="modal-ticket-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+          <span class="modal-ticket-label">Total Paid:</span>
+          <span class="modal-ticket-val" id="ticket-price" style="font-size: 1.1rem; color: #fff;">$0.00</span>
+        </div>
+      </div>
+
+      <button class="btn-close-modal" id="btn-close-success">Back to Movies</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 CineLux Theaters. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
