@@ -790,3 +790,47 @@ select.form-control {
   }
 }
 
+/* Mobile Responsiveness Improvements */
+@media (max-width: 600px) {
+  header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  nav a {
+    margin: 0 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .hero {
+    margin-bottom: 2.5rem;
+  }
+
+  .hero h1 {
+    font-size: 2.15rem;
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .booking-card {
+    padding: 1.25rem;
+  }
+
+  .booking-movie-name {
+    font-size: 1.75rem;
+  }
+
+  .total-price-value {
+    font-size: 1.5rem;
+  }
+
+  main {
+    padding: 1.5rem 1rem;
+  }
+}
+
