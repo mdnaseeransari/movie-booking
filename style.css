@@ -746,3 +746,47 @@ select.form-control {
     transform: translateY(0);
   }
 }
+
+/* Date Picker Calendar Icon Inversion (Dark Mode) */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px;
+  transition: var(--transition);
+}
+
+::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--primary-color);
+}
+
+/* Print Styles for Confirmation Receipt Ticket */
+@media print {
+  body {
+    background: #000000 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+  }
+
+  header, footer, nav, .back-link, .hero, .btn-book, button, a {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 2rem auto !important;
+    max-width: 100% !important;
+  }
+
+  .booking-card {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: #121824 !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+  }
+
+  #ticket-ref {
+    color: #06b6d4 !important;
+  }
+}
+

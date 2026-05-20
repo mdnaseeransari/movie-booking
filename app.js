@@ -1,161 +1,187 @@
 /**
- * CineLux - Client-side Booking Logic
- * Handles interactive seat grids, pricing calculations, and reservation processing.
+ * CineLux - Client-side Booking & Confirmation Logic
+ * Handles movie ticket booking form computations, localStorage persistence, and receipt rendering.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Page detection: only initialize booking logic if booking elements exist
-  const movieDisplayTitle = document.getElementById('movie-display-title');
-  if (movieDisplayTitle) {
-    initializeBooking();
+  // Page routing check based on present DOM elements
+  const bookingForm = document.getElementById('booking-form');
+  const ticketRef = document.getElementById('ticket-ref');
+
+  if (bookingForm) {
+    initializeBookingPage();
+  } else if (ticketRef) {
+    initializeConfirmationPage();
   }
 });
 
-function initializeBooking() {
-  // --- DOM Elements ---
+/**
+ * Booking Page Controller
+ */
+function initializeBookingPage() {
+  // --- Form & Summary Inputs ---
+  const bookingForm = document.getElementById('booking-form');
+  const customerName = document.getElementById('customer-name');
+  const customerEmail = document.getElementById('customer-email');
+  const movieSelect = document.getElementById('movie-select');
+  const showtimeSelect = document.getElementById('showtime');
+  const bookingDate = document.getElementById('booking-date');
+  const seatsCountSelect = document.getElementById('seats-count');
+  const seatTypeSelect = document.getElementById('seat-type');
+
+  // --- Summary Elements ---
   const movieDisplayTitle = document.getElementById('movie-display-title');
   const summaryMovieTitle = document.getElementById('summary-movie-title');
+  const summaryDate = document.getElementById('summary-date');
   const summaryShowtime = document.getElementById('summary-showtime');
-  const summarySeats = document.getElementById('summary-seats');
+  const summarySeatsCount = document.getElementById('summary-seats-count');
+  const summarySeatTier = document.getElementById('summary-seat-tier');
   const summaryTicketPrice = document.getElementById('summary-ticket-price');
   const summaryTotalPrice = document.getElementById('summary-total-price');
-  
-  const showtimeSelect = document.getElementById('showtime');
-  const bookingForm = document.getElementById('booking-form');
-  const seatingGrid = document.getElementById('seating-grid');
-  
-  // Modal Elements
-  const modalOverlay = document.getElementById('success-modal-overlay');
-  const ticketRef = document.getElementById('ticket-ref');
-  const ticketMovie = document.getElementById('ticket-movie');
-  const ticketShowtime = document.getElementById('ticket-showtime');
-  const ticketSeats = document.getElementById('ticket-seats');
-  const ticketPrice = document.getElementById('ticket-price');
-  const btnCloseSuccess = document.getElementById('btn-close-success');
 
-  // --- State Variables ---
-  let selectedSeats = [];
-  let baseTicketPrice = 15.00; // Default ticket price
-  let currentMovie = 'Selected Movie';
+  // --- Pricing Config ---
+  const seatPrices = {
+    'Normal': 10.00,
+    'Premium': 18.00,
+    'VIP': 30.00
+  };
 
-  // --- 1. Parse URL Parameter ---
+  // Set min date to today so user cannot book past dates
+  const today = new Date().toISOString().split('T')[0];
+  bookingDate.min = today;
+  bookingDate.value = today; // default to today for better UX
+
+  // --- Parse Movie Name URL Parameter ---
   const urlParams = new URLSearchParams(window.location.search);
   const movieParam = urlParams.get('movie');
   if (movieParam) {
-    currentMovie = decodeURIComponent(movieParam);
-  } else {
-    // If no movie is selected, fallback or direct back
-    currentMovie = 'General Admission';
-  }
-  
-  // Update header and summary views
-  movieDisplayTitle.textContent = currentMovie;
-  summaryMovieTitle.textContent = currentMovie;
-
-  // --- 2. Seat Selection Logic ---
-  seatingGrid.addEventListener('click', (e) => {
-    // Check if clicked element is a seat and not occupied
-    const seatButton = e.target.closest('.seat');
-    if (!seatButton || seatButton.classList.contains('occupied')) return;
+    const decodedMovie = decodeURIComponent(movieParam);
     
-    // Stop form button behavior (since seats are button tags)
-    e.preventDefault();
-
-    const seatCode = seatButton.getAttribute('data-seat');
-
-    if (seatButton.classList.contains('selected')) {
-      // Deselect
-      seatButton.classList.remove('selected');
-      selectedSeats = selectedSeats.filter(seat => seat !== seatCode);
-    } else {
-      // Select
-      seatButton.classList.add('selected');
-      selectedSeats.push(seatCode);
-      
-      // Subtle pulse scale animation on selection
-      seatButton.style.transform = 'scale(1.25)';
-      setTimeout(() => {
-        seatButton.style.transform = '';
-      }, 150);
+    // Auto-select option if it matches one of the dropdown choices
+    for (let option of movieSelect.options) {
+      if (option.value.toLowerCase() === decodedMovie.toLowerCase()) {
+        movieSelect.value = option.value;
+        break;
+      }
     }
-
-    updateSummary();
-  });
-
-  // --- 3. Showtime & Dynamic Pricing Logic ---
-  showtimeSelect.addEventListener('change', () => {
-    const selectedVal = showtimeSelect.value;
-    summaryShowtime.textContent = selectedVal || 'Not selected';
-
-    // Matinee discount: 10% off for 12:30 PM show
-    if (selectedVal === '12:30 PM') {
-      baseTicketPrice = 13.50; // $15 - 10%
-      summaryTicketPrice.textContent = `$13.50 (Matinee)`;
-    } else {
-      baseTicketPrice = 15.00;
-      summaryTicketPrice.textContent = `$15.00`;
-    }
-
-    updateSummary();
-  });
-
-  // --- 4. Recalculate Summary & Ticket Costs ---
-  function updateSummary() {
-    // Sort seats alphabetically (e.g. A1, B3, F7)
-    selectedSeats.sort((a, b) => {
-      if (a[0] !== b[0]) return a.charCodeAt(0) - b.charCodeAt(0);
-      return parseInt(a.slice(1)) - parseInt(b.slice(1));
-    });
-
-    // Update seat listing
-    if (selectedSeats.length > 0) {
-      summarySeats.textContent = selectedSeats.join(', ');
-      summarySeats.style.color = 'var(--secondary-color)';
-    } else {
-      summarySeats.textContent = 'None';
-      summarySeats.style.color = 'var(--text-muted)';
-    }
-
-    // Calculate total price
-    const totalCost = selectedSeats.length * baseTicketPrice;
-    summaryTotalPrice.textContent = `$${totalCost.toFixed(2)}`;
   }
 
-  // --- 5. Booking Form Submission & Validation ---
+  // --- Event Listeners ---
+  const formControls = [movieSelect, showtimeSelect, bookingDate, seatsCountSelect, seatTypeSelect];
+  formControls.forEach(control => {
+    control.addEventListener('change', updateSummary);
+  });
+
+  // Init form fields check
+  updateSummary();
+
+  // --- Calculate and Update Summary Pane ---
+  function updateSummary() {
+    const movie = movieSelect.value || 'Not selected';
+    const dateVal = bookingDate.value;
+    const time = showtimeSelect.value || 'Not selected';
+    const seats = parseInt(seatsCountSelect.value) || 0;
+    const tier = seatTypeSelect.value || 'Not selected';
+    
+    // Update labels
+    movieDisplayTitle.textContent = movie !== 'Not selected' ? `Book Tickets: ${movie}` : 'Book Ticket';
+    summaryMovieTitle.textContent = movie;
+    summaryDate.textContent = dateVal ? formatDateString(dateVal) : 'Not selected';
+    summaryShowtime.textContent = time;
+    summarySeatsCount.textContent = seats > 0 ? `${seats} Ticket(s)` : '-';
+    summarySeatTier.textContent = tier;
+
+    // Price calculations
+    const unitPrice = seatPrices[tier] || 0.00;
+    summaryTicketPrice.textContent = unitPrice > 0 ? `$${unitPrice.toFixed(2)}` : '$0.00';
+    
+    const totalPrice = seats * unitPrice;
+    summaryTotalPrice.textContent = `$${totalPrice.toFixed(2)}`;
+  }
+
+  // --- Form Submission & Storage ---
   bookingForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Custom Validation: Ensure at least one seat is selected
-    if (selectedSeats.length === 0) {
-      alert('Please select at least one seat before confirming your booking.');
-      return;
-    }
+    const tier = seatTypeSelect.value;
+    const seats = parseInt(seatsCountSelect.value);
+    const unitPrice = seatPrices[tier];
+    const totalAmount = seats * unitPrice;
 
-    // Verify Showtime is selected (extra safety check)
-    if (!showtimeSelect.value) {
-      alert('Please choose a valid showtime.');
-      return;
-    }
+    // Create unique random booking reference number
+    const bookingRef = 'CL-' + Math.floor(10000 + Math.random() * 90000);
 
-    // Generate random mock booking reference
-    const randomRef = 'CL-' + Math.floor(10000 + Math.random() * 90000);
-    const finalTotal = selectedSeats.length * baseTicketPrice;
+    // Save booking payload to localStorage
+    const bookingPayload = {
+      ref: bookingRef,
+      name: customerName.value,
+      email: customerEmail.value,
+      movie: movieSelect.value,
+      showtime: showtimeSelect.value,
+      date: bookingDate.value,
+      seatsCount: seats,
+      seatType: tier,
+      totalPrice: totalAmount.toFixed(2)
+    };
 
-    // Fill virtual receipt ticket
-    ticketRef.textContent = `#${randomRef}`;
-    ticketMovie.textContent = currentMovie;
-    ticketShowtime.textContent = showtimeSelect.value;
-    ticketSeats.textContent = selectedSeats.join(', ');
-    ticketPrice.textContent = `$${finalTotal.toFixed(2)}`;
+    localStorage.setItem('cineLuxBooking', JSON.stringify(bookingPayload));
 
-    // Show Success Modal Dialog
-    modalOverlay.classList.add('active');
+    // Redirect to confirmation screen
+    window.location.href = 'confirm.html';
   });
+}
 
-  // --- 6. Modal Dismissal & Redirect ---
-  btnCloseSuccess.addEventListener('click', () => {
-    modalOverlay.classList.remove('active');
-    // Redirect back to main page to complete booking flow
-    window.location.href = 'index.html';
-  });
+/**
+ * Confirmation Page Controller
+ */
+function initializeConfirmationPage() {
+  const noBookingState = document.getElementById('no-booking-state');
+  const bookingConfirmedState = document.getElementById('booking-confirmed-state');
+
+  // Get data from storage
+  const payload = localStorage.getItem('cineLuxBooking');
+  if (!payload) {
+    // Show error state if navigated to manually without booking
+    noBookingState.style.display = 'block';
+    bookingConfirmedState.style.display = 'none';
+    return;
+  }
+
+  // Parse booking JSON
+  try {
+    const data = JSON.parse(payload);
+
+    // Inject data into ticket receipt
+    document.getElementById('ticket-ref').textContent = `#${data.ref}`;
+    document.getElementById('ticket-movie').textContent = data.movie;
+    document.getElementById('ticket-date').textContent = formatDateString(data.date);
+    document.getElementById('ticket-showtime').textContent = data.showtime;
+    document.getElementById('ticket-name').textContent = data.name;
+    document.getElementById('ticket-email').textContent = data.email;
+    document.getElementById('ticket-seats-count').textContent = data.seatsCount;
+    document.getElementById('ticket-seats-tier').textContent = data.seatType;
+    document.getElementById('ticket-price').textContent = `$${data.totalPrice}`;
+
+    // Show confirmed UI
+    noBookingState.style.display = 'none';
+    bookingConfirmedState.style.display = 'block';
+  } catch (err) {
+    console.error('Error parsing booking data:', err);
+    noBookingState.style.display = 'block';
+    bookingConfirmedState.style.display = 'none';
+  }
+}
+
+/**
+ * Helper to format date string into readable format (e.g. Thursday, May 21, 2026)
+ */
+function formatDateString(dateStr) {
+  if (!dateStr) return '-';
+  const dateObj = new Date(dateStr);
+  if (isNaN(dateObj.getTime())) return dateStr;
+  
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  // Add UTC offset correction for consistent date output
+  const correctedDate = new Date(dateObj.getTime() + dateObj.getTimezoneOffset() * 60000);
+  return correctedDate.toLocaleDateString('en-US', options);
 }

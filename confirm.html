@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineLux - Booking Confirmed</title>
+  <meta name="description" content="Your ticket booking at CineLux is confirmed.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo" id="header-logo">
+      CINE<span>LUX</span>
+    </a>
+    <nav>
+      <a href="index.html" id="nav-home">Home</a>
+      <a href="#" id="nav-movies">Movies</a>
+      <a href="#" id="nav-theaters">Theaters</a>
+    </nav>
+  </header>
+
+  <main style="max-width: 600px;">
+    
+    <!-- No Booking Found State -->
+    <div id="no-booking-state" style="display: none; text-align: center; padding: 3rem 1.5rem;" class="booking-card">
+      <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-red);">⚠️</div>
+      <h2 style="margin-bottom: 1rem;">No Active Booking Found</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">It seems you haven't booked any ticket recently or your session has expired.</p>
+      <a href="index.html" class="btn-book" style="display: inline-block; width: auto; padding: 0.85rem 2rem;">Back to Home</a>
+    </div>
+
+    <!-- Booking Confirmed State -->
+    <div id="booking-confirmed-state" style="display: none; animation: slideUp 0.6s ease-out;">
+      <div class="hero" style="margin-bottom: 2rem;">
+        <div class="success-icon" style="width: 60px; height: 60px; font-size: 2rem; margin-bottom: 1rem;">✓</div>
+        <h1 style="font-size: 2.25rem;">Booking Confirmed!</h1>
+        <p>Your ticket is secured. Show this virtual receipt at the theater entrance.</p>
+      </div>
+
+      <!-- Ticket Receipt Card -->
+      <div class="booking-card" style="position: relative; overflow: hidden; padding: 0;">
+        
+        <!-- Ticket Header (Sleek Gradient Accent) -->
+        <div style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); height: 8px;"></div>
+        
+        <div style="padding: 2rem;">
+          <!-- Reference header -->
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--panel-border); padding-bottom: 1.25rem; margin-bottom: 1.5rem;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Booking Ref</span>
+              <h3 id="ticket-ref" style="font-size: 1.35rem; font-weight: 800; color: var(--secondary-color);">#CL-xxxxx</h3>
+            </div>
+            <span style="font-size: 0.75rem; border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 0.25rem 0.75rem; border-radius: 50px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; background: rgba(6, 182, 212, 0.05);">Confirmed</span>
+          </div>
+
+          <!-- Movie details -->
+          <div style="margin-bottom: 1.5rem;">
+            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Movie</span>
+            <h2 id="ticket-movie" style="font-size: 1.75rem; font-weight: 800; color: #fff; margin-top: 0.25rem;">-</h2>
+          </div>
+
+          <!-- Time and Date grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; border-bottom: 1px solid var(--panel-border); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Date</span>
+              <p id="ticket-date" style="font-weight: 600; font-size: 1.05rem; margin-top: 0.25rem;">-</p>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Showtime</span>
+              <p id="ticket-showtime" style="font-weight: 600; font-size: 1.05rem; margin-top: 0.25rem;">-</p>
+            </div>
+          </div>
+
+          <!-- Customer details & ticket details -->
+          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; border-bottom: 1px solid var(--panel-border); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Guest Name</span>
+              <p id="ticket-name" style="font-weight: 600; margin-top: 0.25rem; font-size: 1rem; color: #fff;">-</p>
+              <p id="ticket-email" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.1rem; word-break: break-all;">-</p>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Seats Reserved</span>
+              <p style="font-weight: 600; margin-top: 0.25rem; font-size: 1rem; color: #fff;">
+                <span id="ticket-seats-count">-</span> &times; <span id="ticket-seats-tier" style="color: var(--secondary-color); font-weight: 700;">-</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Ticket Price footer -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.5rem;">
+            <span style="font-weight: 700; font-size: 1.1rem; color: #fff;">Amount Paid</span>
+            <span id="ticket-price" style="font-size: 2rem; font-weight: 800; color: var(--secondary-color); text-shadow: 0 0 15px var(--secondary-glow);">$0.00</span>
+          </div>
+
+        </div>
+
+        <!-- Styled Cinema Ticket Tear-off side-dots -->
+        <div style="position: absolute; bottom: 85px; left: -10px; width: 20px; height: 20px; background-color: var(--bg-color); border-radius: 50%; z-index: 10;"></div>
+        <div style="position: absolute; bottom: 85px; right: -10px; width: 20px; height: 20px; background-color: var(--bg-color); border-radius: 50%; z-index: 10;"></div>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+        <a href="index.html" class="btn-book" style="flex: 1; text-align: center;">Book Another Movie</a>
+        <button onclick="window.print()" class="btn-book" style="flex: 1; background: transparent; border: 1px solid var(--panel-border); box-shadow: none; font-weight: 500;">
+          Print Ticket
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 CineLux Theaters. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
