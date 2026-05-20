@@ -1,0 +1,33 @@
+name: CineBook CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check all HTML pages exist
+        run: |
+          test -f index.html && echo "index.html found"
+          test -f booking.html && echo "booking.html found"
+          test -f confirm.html && echo "confirm.html found"
+
+      - name: Check CSS and JS exist
+        run: |
+          test -f style.css && echo "style.css found"
+          test -f app.js && echo "app.js found"
+
+      - name: Check Jenkinsfile exists
+        run: |
+          test -f Jenkinsfile && echo "Jenkinsfile found"
+
+      - name: Show project structure
+        run: ls -la
